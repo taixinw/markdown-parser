@@ -13,16 +13,25 @@ public class MarkdownParse {
         int currentIndex = 0;
         while(currentIndex < markdown.length()) {
             int openBracket = markdown.indexOf("[", currentIndex);
-            int closeBracket = markdown.indexOf("]", openBracket);
-            int openParen = markdown.indexOf("(", closeBracket);
-            int closeParen = markdown.indexOf(")", openParen);
-            toReturn.add(markdown.substring(openParen + 1, closeParen));
-            if(markdown.indexOf("[",closeParen) == -1){
+            if (openBracket == -1){
                 break;
             }
+            int closeBracket = markdown.indexOf("]", openBracket);
+            if (closeBracket == -1){
+                break;
+            }
+            int openParen = markdown.indexOf("(", closeBracket);
+            if (openParen == -1 || openParen != closeBracket + 1){
+                break;
+            }
+            int closeParen = markdown.indexOf(")", openParen);
+            if (closeParen == -1){
+                break;
+            }
+            toReturn.add(markdown.substring(openParen + 1, closeParen));
+
             currentIndex = closeParen + 1;
         }
-
         return toReturn;
     }
     public static void main(String[] args) throws IOException {
